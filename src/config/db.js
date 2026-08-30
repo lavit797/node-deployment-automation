@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 // data base connection  
 // my name is divyanka
+
 // my name is lavit 
+// my name is divyanka
 async function connectDB() {
   if (!process.env.MONGO_URI) throw new Error("MONGO_URI is not configured");
   mongoose.set("strictQuery", true);
