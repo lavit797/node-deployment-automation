@@ -1,0 +1,42 @@
+services:
+  app:
+   build: .
+   container_name: task-manager
+   ports:
+    - "5000:5000"
+
+   env_file:
+    - .env
+
+   environment:
+    - Mongo_URI=mongodb://mongo:27017/taskdb
+    - NODE_ENV=production
+
+   depends_on:
+    mongo:
+      condition: service_healthy
+   networks:
+    - task-net
+  
+  mongo:
+    image: mongo:latest
+    container_name: task-mongo
+    volumes:
+      -mongo-data:/data/db
+    healthcheck:
+      test: ["cmd", "mongosh" , "--quiet" , "eval" , "db.adminCommand('ping')"] 
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      -task-net
+
+networks:
+  task-net:
+    driver: bridge
+
+volumes:
+  mongo-data:
+
+
+    
